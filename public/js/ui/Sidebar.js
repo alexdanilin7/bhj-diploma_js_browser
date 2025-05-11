@@ -46,5 +46,15 @@ class Sidebar {
         event.preventDefault();
         App.getModal('register').open();
       });
+
+      const btnLogout = document.querySelector('.menu-item_logout');
+      btnLogout.addEventListener('click', (event)=>{
+        event.preventDefault();
+        User.logout((err, response)=>{
+          if (response.success){
+            App.setState('init');
+          }
+        });
+      });
   }
 }
