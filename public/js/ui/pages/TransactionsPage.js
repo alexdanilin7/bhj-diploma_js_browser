@@ -47,7 +47,6 @@ class TransactionsPage {
       if(btnDeleteTrasaction){
         btnDeleteTrasaction.forEach(btn=>{
           btn.addEventListener('click', ()=>{
-            console.log('asd');
             this.removeTransaction(btn.dataset.id);
           })
         })
@@ -95,7 +94,6 @@ class TransactionsPage {
   removeTransaction( id ) {
       const isConfirmed = confirm(`Вы действительно хотите удалить эту транзакцию?`);
       if (isConfirmed){
-        console.log('asdss');
         Transaction.remove({id,}, (err, response)=>{
           if (err){
            throw new Error('Ошибка');
@@ -118,6 +116,7 @@ class TransactionsPage {
     if(!options){
       throw new Error("Нет элемента");
     }
+    this.clear();
     this.lastOptions = options;
       Account.get(options.account_id, (err, response)=>{
         if(err){
@@ -132,7 +131,7 @@ class TransactionsPage {
 
       Transaction.list(options, (err, response)=>{
           if(response && response.success){
-            this.clear();
+            //this.clear();
             this.renderTransactions(response.data);
           }
       });
@@ -145,7 +144,7 @@ class TransactionsPage {
    * */
   clear() {
     this.renderTransactions([]);
-   // this.renderTitle('Название счёта');
+    this.renderTitle('Название счёта');
   }
 
   /**
