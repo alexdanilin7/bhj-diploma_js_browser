@@ -60,14 +60,11 @@ class AccountsWidget {
   update() {
     const dataUser = User.current();
     if (dataUser && dataUser.name) {
-        console.log("Пользователь:", dataUser.name);
         Account.list(dataUser, (err, response) => {
             if (err) {
-                console.error('Ошибка получения счетов:', err);
+                console.error('Ошибка получения счетов: '+err);
                 return;
             }
-
-            console.log('Ответ сервера:', response);
             if (response.success) {
                 const modal = App.getModal('createAccount');
                 if (modal) {
@@ -102,7 +99,6 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount( element ) {
-    console.log('asdfaksdf');
     const accounts = this.element.querySelectorAll('.account');
     accounts.forEach(account => {
         account.classList.remove('active');
@@ -131,7 +127,7 @@ class AccountsWidget {
           <span>${item.name}</span> /
           <span>${item.sum} ₽</span>
       </a>
-    </li>`)
+    </li>`);
   }
 
   /**

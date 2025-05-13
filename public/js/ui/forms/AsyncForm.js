@@ -15,7 +15,6 @@ class AsyncForm {
   constructor(element) {
     try{
       this.element = element;
-      console.log(this.element);
       this.registerEvents();
     } catch (e){
       console.log("Ошибка формы: "+ e);

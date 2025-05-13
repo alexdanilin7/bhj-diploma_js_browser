@@ -7,9 +7,9 @@ const createRequest = (options = {}) => {
     xhr.responseType = 'json';
     try{
         if (options.method === 'GET'){
-            const queryString = new URLSearchParams(options.data).toString();
+                 const queryString = new URLSearchParams(options.data).toString();
                 xhr.open(options.method, `${options.url}?${queryString}`);
-                xhr.send()
+                xhr.send()        
         }else{
             const formData = new FormData();
             const jsonData = options.data;
@@ -28,10 +28,7 @@ const createRequest = (options = {}) => {
     
             
                  xhr.open(options.method, options.url);
-                 xhr.send(formData);
-                 console.log('send post');
-           
-              
+                 xhr.send(formData);           
         }
     }catch(e){
         options.callback(e, null);
@@ -41,7 +38,6 @@ const createRequest = (options = {}) => {
 
     xhr.addEventListener('load', () => {
         if (xhr.status >= 200 && xhr.status < 300) {
-           // console.log('Ответ сервера', xhr.response);
             options.callback(null, xhr.response);
         } else {
             options.callback(new Error(`Ошибка ${xhr.status}: ${xhr.statusText}`), null);

@@ -86,9 +86,7 @@ class User {
         responseType: 'json',
         data,
         callback: (err, response) => {
-          console.log("register: "+ response);
           if (response && response.user) {
-            console.log("ajsdhfkasfkasjdhfkasjdfhaklshdfkasdhj");
             this.setCurrent(response.user);
           }
           callback(err, response);
