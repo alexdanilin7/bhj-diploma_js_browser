@@ -13,13 +13,12 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor(element) {
-    try{
+
+    if (!element){
+      throw new Error('Элемент не существует!');
+    }
       this.element = element;
       this.registerEvents();
-    } catch (e){
-      console.log("Ошибка формы: "+ e);
-    }
-    
   }
 
   /**
@@ -42,11 +41,7 @@ class AsyncForm {
    * */
   getData() {
       const formData  =  new FormData(this.element);
-      const jsonData = {};
-      for (const [key, val] of formData.entries()){
-        jsonData[key] = val;
-      }
-      return jsonData;
+      return Object.fromEntries(formData.entries());
   }
 
   onSubmit(options){

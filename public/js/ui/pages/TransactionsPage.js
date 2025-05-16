@@ -13,13 +13,12 @@ class TransactionsPage {
   
 
   constructor( element ) {
-      if(!element){
-        console.error(new Error('Элемент не существует'));
-      }else{
-        this.element = element;
-        this.registerEvents();
-      }
-      this.lastOptions = null;
+    if (!element) {
+      throw new Error('Элемент не существует');
+    }
+    this.element = element;
+    this.lastOptions = null;
+    this.registerEvents();
   }
 
   /**
@@ -39,18 +38,13 @@ class TransactionsPage {
    * */
   registerEvents() {
 
-      const btnDeleteAccount = this.element.querySelector('.remove-account');
-      const btnDeleteTrasaction = this.element.querySelectorAll('.transaction__remove');
-      btnDeleteAccount.addEventListener('click', ()=>{
-          this.removeAccount();
-      });
-      if(btnDeleteTrasaction){
-        btnDeleteTrasaction.forEach(btn=>{
-          btn.addEventListener('click', ()=>{
-            this.removeTransaction(btn.dataset.id);
-          })
-        })
+      this.element.addEventListener('click', (event) => {
+      if (event.target.classList.contains('remove-account')) {
+        this.removeAccount();
+      } else if (event.target.classList.contains('transaction__remove')) {
+        this.removeTransaction(event.target.dataset.id);
       }
+    });
      
   }
 
@@ -72,10 +66,7 @@ class TransactionsPage {
             throw new Error('Ошибка удаления счета'+err);
           }
           if (response && response.success){
-              App.updateWidgets();
-              App.updateForms();
               App.update();
-              App.clear();
           }
         });
       }
@@ -131,7 +122,6 @@ class TransactionsPage {
 
       Transaction.list(options, (err, response)=>{
           if(response && response.success){
-            //this.clear();
             this.renderTransactions(response.data);
           }
       });
@@ -181,9 +171,10 @@ class TransactionsPage {
    * */
   getTransactionHTML(item){
     const classItemHTML = (item.type.toLowerCase() === 'income') ? 'transaction_income': 'transaction_expense';
-    const content = this.element.querySelector('.content');
-    content.insertAdjacentHTML("beforeend", 
-      `<div class="transaction ${classItemHTML} row">
+    //const content = this.element.querySelector('.content');
+    //content.insertAdjacentHTML("beforeend", 
+      
+    return `<div class="transaction ${classItemHTML} row">
     <div class="col-md-7 transaction__details">
       <div class="transaction__icon">
           <span class="fa fa-money fa-2x"></span>
@@ -206,7 +197,8 @@ class TransactionsPage {
             <i class="fa fa-trash"></i>  
         </button>
     </div>
-</div>`);
+</div>`
+    //);
   }
 
   /**
@@ -214,14 +206,12 @@ class TransactionsPage {
    * используя getTransactionHTML
    * */
   renderTransactions(data){
+    console.log("data ", data);
+    const content = this.element.querySelector('.content');
     if(data.length === 0){
-      const content = this.element.querySelector('.content');
       content.textContent = "";
       return;
     }
-      data.forEach(item => {
-        this.getTransactionHTML(item);
-      });
-      this.registerEvents();
+    content.innerHTML = data.map(item => this.getTransactionHTML(item)).join('');
   }
 }

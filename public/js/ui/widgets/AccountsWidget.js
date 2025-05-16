@@ -29,22 +29,17 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
-      const createAccount = this.element.querySelector('.create-account');
-      createAccount.addEventListener('click', ()=>{
-        const accountNewModal = App.getModal('createAccount');
-        if(accountNewModal){
-          accountNewModal.open();
-        }
-        
-      });
-      
-      const accountes =  this.element.querySelectorAll('.account');
-      accountes.forEach((item)=>{
-          item.addEventListener('click', (event)=>{
+       this.element.addEventListener('click', (event) => {
+          if (event.target.closest('.create-account')) {
+            const accountNewModal = App.getModal('createAccount');
+            if(accountNewModal){
+              accountNewModal.open();
+            }
+          } else if (event.target.closest('.account')) {
             event.preventDefault();
-            this.onSelectAccount(item);
-          });
-      });
+            this.onSelectAccount(event.target.closest('.account'));
+          }
+        });
   }
 
   /**
@@ -145,7 +140,5 @@ class AccountsWidget {
     data.forEach((item)=>{
       this.getAccountHTML(item);
     });
-
-    this.registerEvents();
   }
 }

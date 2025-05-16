@@ -25,14 +25,9 @@ class CreateTransactionForm extends AsyncForm {
               return;
           }
           if(response && response.success){
-            const selectExpense = document.getElementById("expense-accounts-list");
-            const selectIncome = document.getElementById('income-accounts-list');
-            selectExpense.options.length = 0;
-            selectIncome.options.length = 0;
-            response.data.forEach(item => {
-              selectIncome.insertAdjacentHTML('beforeend', `<option value="${item.id}">${item.name}</option>`);
-              selectExpense.insertAdjacentHTML('beforeend', `<option value="${item.id}">${item.name}</option>`);
-            });
+            const select = this.element.querySelector('select');
+            select.options.length = 0;
+            select.innerHTML = response.data.map(item => `<option value="${item.id}">${item.name}</option>`).join('');;
           }
       });
     }

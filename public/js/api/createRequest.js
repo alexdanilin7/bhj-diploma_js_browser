@@ -5,11 +5,11 @@
 const createRequest = (options = {}) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    try{
+    let requestData = null;
+    let url = options.url;
         if (options.method === 'GET'){
                  const queryString = new URLSearchParams(options.data).toString();
-                xhr.open(options.method, `${options.url}?${queryString}`);
-                xhr.send()        
+                 url = `${options.url}?${queryString}`;
         }else{
             const formData = new FormData();
             const jsonData = options.data;
@@ -23,13 +23,15 @@ const createRequest = (options = {}) => {
                     } else {
                         formData.append(key, value);
                     }
+                    
                 }
             }
-    
-            
-                 xhr.open(options.method, options.url);
-                 xhr.send(formData);           
+            requestData = formData;
         }
+    try{
+
+        xhr.open(options.method, url);
+        xhr.send(requestData);   
     }catch(e){
         options.callback(e, null);
         return;
@@ -37,11 +39,12 @@ const createRequest = (options = {}) => {
     
 
     xhr.addEventListener('load', () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
+         console.log("request ", requestData, url);
+         console.log("xhr ", JSON.stringify(xhr.response));
+         console.log("options ", options)
+
+
             options.callback(null, xhr.response);
-        } else {
-            options.callback(new Error(`Ошибка ${xhr.status}: ${xhr.statusText}`), null);
-        }
     });
     xhr.addEventListener('error', () => {
         options.callback(new Error('Сетевая ошибка'), null);
