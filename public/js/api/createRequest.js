@@ -39,11 +39,6 @@ const createRequest = (options = {}) => {
     
 
     xhr.addEventListener('load', () => {
-         console.log("request ", requestData, url);
-         console.log("xhr ", JSON.stringify(xhr.response));
-         console.log("options ", options)
-
-
             options.callback(null, xhr.response);
     });
     xhr.addEventListener('error', () => {
